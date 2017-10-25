@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import ListContacts from './ListContacts';
 
 const contacts = [
   {
@@ -21,11 +22,14 @@ const contacts = [
   }
 ]
 
+// The props in the components are like the parameters on the functions.
+
 class App extends Component {
   render() {
     return (
       <div>
-        Hello World
+        <ListContacts contacts={contacts} />
+        
       </div>      
     )
   }
