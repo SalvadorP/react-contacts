@@ -2,12 +2,15 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import ListContacts from './ListContacts';
 import ListContactsF from './ListContacts';
+import CreateContact from './CreateContact';
 import * as ContactsAPI from './utils/ContactsAPI';
+
 
 // The props in the components are like the parameters on the functions.
 class App extends Component {
   // NEVER initialize the state using props!!
   state = {
+    screen: 'list', // list,create
     contacts: []    
   }
 
@@ -36,11 +39,20 @@ class App extends Component {
   render() {
     // <ListContactsF onDeleteContact={this.removeContact} contacts={this.state.contacts} />
     return (
-      <div>
+      <div className="app">
+      {this.state.screen === 'list' && (
         <ListContacts 
-          onDeleteContact={this.removeContact} 
-          contacts={this.state.contacts} 
-          />                
+        onDeleteContact={this.removeContact} 
+        contacts={this.state.contacts} 
+        onNavigate={() => {
+          this.setState({ screen: 'create' })
+        }}
+        />                
+      )}
+      {this.state.screen === 'create' && (
+        <CreateContact />
+      )}
+          
       </div>      
     )
   }
