@@ -1,4 +1,5 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
+import PropTypes from 'prop-types'
 import ListContacts from './ListContacts';
 import ListContactsF from './ListContacts';
 
@@ -44,10 +45,20 @@ class App extends Component {
     // <ListContactsF onDeleteContact={this.removeContact} contacts={this.state.contacts} />
     return (
       <div>
-        <ListContacts onDeleteContact={this.removeContact} contacts={this.state.contacts} />        
-        
+        <ListContacts 
+          onDeleteContact={this.removeContact} 
+          contacts={this.state.contacts} 
+          />                
       </div>      
     )
   }
 }
+
+// PropTypes will check that contacts is an array and onDeleteContact has a function.
+// It's a way to validate intended data types.
+ListContacts.PropTypes = {
+  contacts: PropTypes.array.isRequired,
+  onDeleteContact: PropTypes.func.isRequired
+}
+
 export default App;
