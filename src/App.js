@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
+import { Route } from 'react-router-dom';
 import ListContacts from './ListContacts';
 import ListContactsF from './ListContacts';
 import CreateContact from './CreateContact';
@@ -20,7 +21,7 @@ class App extends Component {
       this.setState({contacts})
     })
   }
-
+  
   removeContact = (contact) => {
     // The setState can be invoked in two ways
     // The reason to use the setState with the function is to make more operations. 
@@ -36,23 +37,33 @@ class App extends Component {
     // This way you only replace the state with a literal or something.
     // this.setState({ })    
   }
+
+  createContact(contact) {
+    ContactsAPI.create(contact).then(contact => {
+      this.setState(state => ({
+        contacts: state.contacts.concat([contact])
+      }))
+    })
+  }
+
   render() {
     // <ListContactsF onDeleteContact={this.removeContact} contacts={this.state.contacts} />
+    // Withouth the exact the router matches part of the route.
     return (
-      <div className="app">
-      {this.state.screen === 'list' && (
+      <div className="app">      
+      <Route exact path="/" render={() => (
         <ListContacts 
-        onDeleteContact={this.removeContact} 
-        contacts={this.state.contacts} 
-        onNavigate={() => {
-          this.setState({ screen: 'create' })
-        }}
-        />                
-      )}
-      {this.state.screen === 'create' && (
-        <CreateContact />
-      )}
-          
+          onDeleteContact={this.removeContact} 
+          contacts={this.state.contacts}           
+        />  
+      )} />  
+      <Route path="/create" render={({history}) => (
+        <CreateContact
+        onCreateContact={ (contact) => {
+          this.createContact(contact);          
+          history.push('/');
+        }}/>
+      )}/>
       </div>      
     )
   }
